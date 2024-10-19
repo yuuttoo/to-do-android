@@ -27,13 +27,13 @@ import com.example.todo_android.data.room.TodoContent
 
 
 @Composable
-fun TodoListScreen() {
-    TodoList()
+fun TodoListScreen(todos: List<TodoContent>) {
+    TodoList(todos)
 }
 
 
 @Composable
-fun TodoList() {
+fun TodoList(todos: List<TodoContent>) {
     val listState = rememberLazyListState()
 
     LazyColumn (
@@ -44,20 +44,11 @@ fun TodoList() {
             .fillMaxWidth()
             .padding(start = 20.dp, end = 20.dp)
     ) {
-        item {
-            //Text(text = "First item")
-            todoItem(TodoContent(1, "A", "dadadaf", false))
+        todos.forEach { todo ->
+            item {
+                todoItem(TodoContent(todo.id, todo.title, todo.content, todo.finished))
+            }
         }
-        item {
-            //Text(text = "First item")
-            todoItem(TodoContent(2, "A", "dadadaf", false))
-        }
-        item {
-            //Text(text = "First item")
-            todoItem(TodoContent(3, "C", "dadadaddddf", true))
-        }
-
-
     }
 }
 
@@ -108,3 +99,4 @@ fun todoItem(todoContent: TodoContent) {
             }
         }
 }
+

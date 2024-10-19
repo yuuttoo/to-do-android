@@ -16,7 +16,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-class MainViewModel(private val todoDao: TodoDao) : ViewModel() {
+class MainViewModel(private val todoDao : TodoDao) : ViewModel() {
 
 //    private val _uiState = MutableStateFlow(TodoUiState())
 //    val uiState : StateFlow<TodoUiState> = _uiState.asStateFlow()
@@ -43,18 +43,29 @@ class MainViewModel(private val todoDao: TodoDao) : ViewModel() {
     fun addTodo(todoItem: TodoContent) {
         viewModelScope.launch(Dispatchers.IO) {
             todoDao.insertTodo(todoItem)
+            loadTodos()
         }
     }
 
     fun deleteTodo(todoItem: TodoContent) {
         viewModelScope.launch(Dispatchers.IO) {
             todoDao.deleteTodo(todoItem)
+            loadTodos()
         }
     }
 
-    fun editTodo(todoItem: TodoContent) {//edit text, set finished
+    fun editTodo(todoItem: TodoContent) {//edit text
         viewModelScope.launch(Dispatchers.IO) {
             todoDao.editTodo(todoItem)
+            loadTodos()
+        }
+    }
+
+    fun setTodoFinished(todoItem: TodoContent) {//edit text
+        todoItem.finished = true
+        viewModelScope.launch(Dispatchers.IO) {
+            todoDao.editTodo(todoItem)
+            loadTodos()
         }
     }
 

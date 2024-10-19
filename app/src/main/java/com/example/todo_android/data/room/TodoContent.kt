@@ -5,8 +5,8 @@ import androidx.room.PrimaryKey
 
 @Entity (tableName = "todos")
 data class TodoContent(
-    @PrimaryKey(autoGenerate = true) val id: Int,
-    val title: String,
-    val content: String,
-    val finished: Boolean
+    @PrimaryKey(autoGenerate = true) val id: Int = 0,
+    var title: String,
+    var content: String,
+    var finished: Boolean
 )
