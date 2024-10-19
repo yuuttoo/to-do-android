@@ -10,18 +10,21 @@ import androidx.room.Update
 @Dao
 interface TodoDao {
     @Query("SELECT * FROM todos")
-    fun getAll(): List<TodoContent>
+    suspend fun getAll(): List<TodoContent>
+    // Option 2: Using Flow for continuous observation
+//    @Query("SELECT * FROM todo_table")
+//    fun getAllTodosAsFlow(): Flow<List<Todo>>
 
     @Query("SELECT * FROM todos WHERE finished = true")
-    fun getFinishedTodo() :List<TodoContent>
+    suspend fun getFinishedTodo() :List<TodoContent>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertTodo(vararg todoContent: TodoContent)
+    suspend fun insertTodo(vararg todoContent: TodoContent)
 
     @Delete
-    fun deleteTodo(vararg todoContent: TodoContent)
+    suspend fun deleteTodo(vararg todoContent: TodoContent)
 
     @Update
-    fun editTodo(vararg todoContent: TodoContent)
+    suspend fun editTodo(vararg todoContent: TodoContent)
 
 }

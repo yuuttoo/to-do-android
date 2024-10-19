@@ -58,6 +58,8 @@ class MainActivity : ComponentActivity() {
         setContent {
             Todo_androidTheme {
                 Scaffold(
+                    modifier = Modifier
+                        .background(colorResource(R.color.dark_brown)),
                     bottomBar = {
                         BottomAppBar(
                             actions = {
@@ -88,7 +90,6 @@ class MainActivity : ComponentActivity() {
                 ) { innerPadding ->
                     Box(
                         modifier = Modifier.padding(innerPadding)
-                            .background(colorResource(R.color.dark_brown))
                     ) {
                         TodoListScreen()
                     }
