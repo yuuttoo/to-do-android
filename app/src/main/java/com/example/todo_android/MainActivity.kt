@@ -121,6 +121,10 @@ class MainActivity : ComponentActivity() {
                             onSetEdit = { todo ->
                                 selectedTodo = todo
                                 showEditDialog = true
+                            },
+                            onDelete = { todo ->
+                                Log.i("todoid", "${todo.id}")
+                                vm.deleteTodo(todo)
                             }
                         )
                     }
