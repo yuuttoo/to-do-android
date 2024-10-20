@@ -28,6 +28,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -72,6 +73,8 @@ class MainActivity : ComponentActivity() {
             val todos by vm.todos.collectAsState(initial = emptyList())
 
             var showAddDialog by remember { mutableStateOf(false) }
+            var showEditDialog by remember { mutableStateOf(false) }
+            var selectedTodo by remember { mutableStateOf<TodoContent?>(null) }
 
             Todo_androidTheme {
                 Scaffold(
@@ -80,7 +83,9 @@ class MainActivity : ComponentActivity() {
                     bottomBar = {
                         BottomAppBar(
                             actions = {
-                                IconButton(onClick = { /* do something */ }) {
+                                IconButton(onClick = {
+
+                                }) {//edit title and content
                                     Icon(
                                         Icons.Filled.Create,
                                         contentDescription = "Localized description"
@@ -111,8 +116,11 @@ class MainActivity : ComponentActivity() {
                         TodoListScreen(
                             todos = todos,
                             onSetFinish = { todo ->
-                                Log.i("todo", "${todo.content} with ${todo.id}")
                                 vm.setTodoFinished(todo)
+                            },
+                            onSetEdit = { todo ->
+                                selectedTodo = todo
+                                showEditDialog = true
                             }
                         )
                     }
@@ -130,6 +138,21 @@ class MainActivity : ComponentActivity() {
                                 )
                         }
                     )
+                    // 編輯對話框
+                    if (selectedTodo != null) {
+                        Log.i("selectedTodo", "${selectedTodo!!.id}")
+                        EditTodoDialog(
+                            showDialog = showEditDialog,
+                            todoItem = selectedTodo!!,
+                            onDismiss = { showEditDialog = false },
+                            onConfirm = { title, content ->
+                                vm.editTodo(
+                                    selectedTodo!!.copy(title = title, content = content)
+                                )
+                            }
+                        )
+                    }
+
                 }
             }
         }
@@ -198,6 +221,70 @@ fun AddTodoDialog(
         )
     }
 }
+
+@Composable
+fun EditTodoDialog(
+    showDialog: Boolean,
+    todoItem: TodoContent,
+    onDismiss: () -> Unit,
+    onConfirm: (title: String, content: String) -> Unit
+) {
+    var title by remember(todoItem) { mutableStateOf(todoItem.title) }
+    var content by remember(todoItem) { mutableStateOf(todoItem.content) }
+
+
+
+    if (showDialog) {
+        AlertDialog(
+            onDismissRequest = onDismiss,
+            title = { Text(text = "Edit Todo") },
+            text = {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 8.dp),
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    OutlinedTextField(
+                        value = title,
+                        onValueChange = { title = it },
+                        label = { Text("Title") },
+                        singleLine = true,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+
+                    OutlinedTextField(
+                        value = content,
+                        onValueChange = { content = it },
+                        label = { Text("Content") },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(100.dp),
+                        maxLines = 5
+                    )
+                }
+            },
+            confirmButton = {
+                TextButton(
+                    onClick = {
+                        if (title.isNotBlank()) {
+                            onConfirm(title, content)
+                            onDismiss()
+                        }
+                    }
+                ) {
+                    Text("Save")
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = onDismiss) {
+                    Text("Cancel")
+                }
+            }
+        )
+    }
+}
+
 
 
 @Preview(showBackground = true)

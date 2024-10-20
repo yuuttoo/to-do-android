@@ -1,6 +1,7 @@
 package com.example.todo_android.ui.TodoList
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -29,16 +30,18 @@ import com.example.todo_android.data.room.TodoContent
 @Composable
 fun TodoListScreen(
     todos: List<TodoContent>,
-    onSetFinish: (TodoContent) -> Unit
+    onSetFinish: (TodoContent) -> Unit,
+    onSetEdit:  (TodoContent) -> Unit,
 ) {
-    TodoList(todos, onSetFinish)
+    TodoList(todos, onSetFinish, onSetEdit)
 }
 
 
 @Composable
 fun TodoList(
     todos: List<TodoContent>,
-    onSetFinish:  (TodoContent) -> Unit
+    onSetFinish:  (TodoContent) -> Unit,
+    onSetEdit:  (TodoContent) -> Unit,
     ) {
     val listState = rememberLazyListState()
 
@@ -52,7 +55,7 @@ fun TodoList(
     ) {
         todos.forEach { todo ->
             item {
-                todoItem(todo, onSetFinish)
+                todoItem(todo, onSetFinish, onSetEdit)
             }
         }
     }
@@ -61,7 +64,8 @@ fun TodoList(
 @Composable
 fun todoItem(
     todoContent: TodoContent,
-    onSetFinish:  (TodoContent) -> Unit
+    onSetFinish:  (TodoContent) -> Unit,
+    onSetEdit: (TodoContent) -> Unit
 ) {
         Column(
             modifier = Modifier
@@ -78,7 +82,9 @@ fun todoItem(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Column(
-                    modifier = Modifier.weight(1f),
+                    modifier = Modifier
+                        .weight(1f)
+                        .clickable { onSetEdit(todoContent) },
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                         Text(

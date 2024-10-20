@@ -57,9 +57,9 @@ class MainViewModel(private val todoDao : TodoDao) : ViewModel() {
         }
     }
 
-    fun editTodo(todoItem: TodoContent, newTitle: String, newContent: String) {//edit text
+    fun editTodo(todoItem: TodoContent) {//edit text//, newTitle: String, newContent: String
         viewModelScope.launch(Dispatchers.IO) {
-            todoDao.editTodo(todoItem.copy(title = newTitle, content = newContent))
+            todoDao.editTodo(todoItem)
         }
     }
 
