@@ -60,33 +60,16 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-
-        //lifecycleScope.launch(Dispatchers.IO) {
         val db = getInstance(applicationContext)
         val factory = MainViewModelFactory(db.todoDao())
 
-        //}
         vm = ViewModelProvider(this, factory)[MainViewModel::class.java]
 
         enableEdgeToEdge()
 
-
-//        lifecycleScope.launch(Dispatchers.IO) {
-//            val db = getInstance(applicationContext)
-//
-//            db.todoDao().insertTodo(TodoContent(1, "A", "dadadaf", false))
-//            db.todoDao().insertTodo(TodoContent(2, "B", "dadadaf", false))
-//            db.todoDao().insertTodo(TodoContent(3, "C", "dadadaf", true))
-//
-//            var allTodoList = db.todoDao().getAll()
-//            Log.i("allTodoList", "allTodoList = " + allTodoList.size)
-//            for (i in 0 until allTodoList.size) {
-//                Log.d("SHOW", "allTodoList = " + allTodoList[i])
-//            }
-//        }
-
         setContent {
-            val todos by vm.todos.collectAsState()
+            //val todos by vm.todos.collectAsState()
+            val todos by vm.todos.collectAsState(initial = emptyList())
 
             var showAddDialog by remember { mutableStateOf(false) }
 
@@ -125,7 +108,13 @@ class MainActivity : ComponentActivity() {
                     Box(
                         modifier = Modifier.padding(innerPadding)
                     ) {
-                        TodoListScreen(todos)
+                        TodoListScreen(
+                            todos = todos,
+                            onSetFinish = { todo ->
+                                Log.i("todo", "${todo.content} with ${todo.id}")
+                                vm.setTodoFinished(todo)
+                            }
+                        )
                     }
                     //To do dialog
                     AddTodoDialog(

@@ -27,13 +27,19 @@ import com.example.todo_android.data.room.TodoContent
 
 
 @Composable
-fun TodoListScreen(todos: List<TodoContent>) {
-    TodoList(todos)
+fun TodoListScreen(
+    todos: List<TodoContent>,
+    onSetFinish: (TodoContent) -> Unit
+) {
+    TodoList(todos, onSetFinish)
 }
 
 
 @Composable
-fun TodoList(todos: List<TodoContent>) {
+fun TodoList(
+    todos: List<TodoContent>,
+    onSetFinish:  (TodoContent) -> Unit
+    ) {
     val listState = rememberLazyListState()
 
     LazyColumn (
@@ -46,14 +52,17 @@ fun TodoList(todos: List<TodoContent>) {
     ) {
         todos.forEach { todo ->
             item {
-                todoItem(TodoContent(todo.id, todo.title, todo.content, todo.finished))
+                todoItem(todo, onSetFinish)
             }
         }
     }
 }
 
 @Composable
-fun todoItem(todoContent: TodoContent) {
+fun todoItem(
+    todoContent: TodoContent,
+    onSetFinish:  (TodoContent) -> Unit
+) {
         Column(
             modifier = Modifier
                 .padding(12.dp)
@@ -87,7 +96,7 @@ fun todoItem(todoContent: TodoContent) {
                         )
                 }
                 IconButton(
-                    onClick = { /* do something */ },
+                    onClick = { onSetFinish(todoContent) },
                     modifier = Modifier.padding(end = 8.dp)
                 ) {
                     Icon(
