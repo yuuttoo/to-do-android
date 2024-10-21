@@ -6,7 +6,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -16,7 +15,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -91,18 +89,17 @@ fun TodoItem(
                     Toast.makeText(context, "Item deleted", Toast.LENGTH_SHORT).show()
                     true
                 }
-                //SwipeToDismissBoxValue.Settled ->  false
                 else ->  false
             }
         },
-        // positional threshold of 25%
+        // positional threshold of 25% 滑多少比例會觸發dismissState
         positionalThreshold = { it * .30f }
     )
 
     LaunchedEffect(key1 = dismissState.currentValue) {
         if (dismissState.currentValue == SwipeToDismissBoxValue.EndToStart || dismissState.currentValue == SwipeToDismissBoxValue.StartToEnd) {
             // Ensure the dismissState resets after the item is deleted
-            dismissState.reset()  // or update to `SwipeToDismissBoxValue.Settled`
+            dismissState.reset()
         }
     }
     SwipeToDismissBox(
@@ -160,7 +157,6 @@ fun TodoItem(
 }
 
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DismissBackground(dismissState: SwipeToDismissBoxState) {
     val color = when (dismissState.dismissDirection) {

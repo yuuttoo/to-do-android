@@ -14,8 +14,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Cancel
 import androidx.compose.material.icons.filled.Check
-import androidx.compose.material.icons.filled.Create
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.BottomAppBarDefaults
@@ -28,7 +28,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -38,21 +37,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.LifecycleCoroutineScope
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.viewModelScope
-import androidx.room.Database
 import com.example.todo_android.data.room.TodoContent
-import com.example.todo_android.data.room.TodoDao
-import com.example.todo_android.data.room.TodoDatabase
 import com.example.todo_android.data.room.TodoDatabase.Companion.getInstance
 import com.example.todo_android.ui.MainViewModel
 import com.example.todo_android.ui.TodoList.TodoListScreen
 import com.example.todo_android.ui.theme.Todo_androidTheme
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class MainActivity : ComponentActivity() {
     private lateinit var vm: MainViewModel
@@ -69,12 +59,14 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
 
         setContent {
-            //val todos by vm.todos.collectAsState()
-            val todos by vm.todos.collectAsState(initial = emptyList())
+            val todos by vm.todos.collectAsState()
+
 
             var showAddDialog by remember { mutableStateOf(false) }
             var showEditDialog by remember { mutableStateOf(false) }
             var selectedTodo by remember { mutableStateOf<TodoContent?>(null) }
+
+            var toggleToFinished by remember { mutableStateOf(false) }
 
             Todo_androidTheme {
                 Scaffold(
@@ -84,18 +76,21 @@ class MainActivity : ComponentActivity() {
                         BottomAppBar(
                             actions = {
                                 IconButton(onClick = {
-
+                                    toggleToFinished = (!toggleToFinished)
+                                    vm.toggleFinishedTodos()
                                 }) {//edit title and content
-                                    Icon(
-                                        Icons.Filled.Create,
-                                        contentDescription = "Localized description"
-                                    )
-                                }
-                                IconButton(onClick = { /* do something */ }) {
-                                    Icon(
-                                        Icons.Filled.Check,
-                                        contentDescription = "Localized description",
-                                    )
+                                    if (!toggleToFinished) {
+                                        Icon(
+                                            Icons.Filled.Check,
+                                            contentDescription = "Show Finished todos"
+                                        )
+                                    } else {
+                                        Icon(
+                                            Icons.Filled.Cancel,
+                                            contentDescription = "Show All todos"
+                                        )
+                                    }
+
                                 }
                             },
                             floatingActionButton = {
@@ -123,7 +118,6 @@ class MainActivity : ComponentActivity() {
                                 showEditDialog = true
                             },
                             onDelete = { todo ->
-                                Log.i("todoid", "${todo.id}")
                                 vm.deleteTodo(todo)
                             }
                         )
