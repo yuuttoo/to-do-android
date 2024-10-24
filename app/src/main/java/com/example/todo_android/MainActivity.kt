@@ -43,7 +43,10 @@ import com.example.todo_android.data.room.TodoDatabase.Companion.getInstance
 import com.example.todo_android.ui.TodoList.TodoViewModel
 import com.example.todo_android.ui.TodoList.TodoListScreen
 import com.example.todo_android.ui.theme.Todo_androidTheme
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     private lateinit var vm: TodoViewModel
 
@@ -51,10 +54,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val db = getInstance(applicationContext)
-        val factory = MainViewModelFactory(db.todoDao())
-
-        vm = ViewModelProvider(this, factory)[TodoViewModel::class.java]
+        vm = ViewModelProvider(this)[TodoViewModel::class.java]
 
         enableEdgeToEdge()
 

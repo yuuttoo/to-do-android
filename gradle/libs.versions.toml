@@ -12,6 +12,7 @@ materialIcons = "1.7.4"
 roomVersion = "2.6.1"
 coroutines = "1.3.9"
 hilt = "2.52"
+hiltNavigationCompose = "1.2.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -35,6 +36,8 @@ androidx-room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = 
 kotlinx-coroutines = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "coroutines" }
 com-google-dagger-hilt = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
 com-google-dagger-hilt-compiler = { group = "com.google.dagger", name = "hilt-android-compiler", version.ref = "hilt" }
+hilt-navigation-compose = { group = "androidx.hilt", name = "hilt-navigation-compose", version.ref = "hiltNavigationCompose" }
+
 
 
 [plugins]

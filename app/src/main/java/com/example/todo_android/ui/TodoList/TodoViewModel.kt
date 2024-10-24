@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.todo_android.data.model.TodoContent
 import com.example.todo_android.data.repository.TodoRepository
 import com.example.todo_android.data.room.TodoDao
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -12,8 +13,12 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class TodoViewModel(private val repository: TodoRepository) : ViewModel() {
+@HiltViewModel
+class TodoViewModel @Inject constructor(
+    private val repository: TodoRepository
+) : ViewModel() {
 
     private val _showFinishedOnly = MutableStateFlow(false)
 

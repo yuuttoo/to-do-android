@@ -52,6 +52,7 @@ android {
         }
         buildFeatures {
             compose = true
+            buildConfig = true
         }
         composeOptions {
             kotlinCompilerExtensionVersion = "1.5.1"
@@ -85,8 +86,10 @@ android {
         ksp(libs.androidx.room.compiler)
         implementation(libs.androidx.room.ktx)
         implementation(libs.kotlinx.coroutines)
-        implementation("com.google.dagger:hilt-android:2.44")
-        ksp("com.google.dagger:hilt-android-compiler:2.44")
+        implementation(libs.com.google.dagger.hilt)
+        ksp(libs.com.google.dagger.hilt.compiler)
+        implementation(libs.hilt.navigation.compose)
+
 
 
     }
