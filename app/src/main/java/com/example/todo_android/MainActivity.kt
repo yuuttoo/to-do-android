@@ -38,14 +38,14 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModelProvider
-import com.example.todo_android.data.room.TodoContent
+import com.example.todo_android.data.model.TodoContent
 import com.example.todo_android.data.room.TodoDatabase.Companion.getInstance
-import com.example.todo_android.ui.MainViewModel
+import com.example.todo_android.ui.TodoList.TodoViewModel
 import com.example.todo_android.ui.TodoList.TodoListScreen
 import com.example.todo_android.ui.theme.Todo_androidTheme
 
 class MainActivity : ComponentActivity() {
-    private lateinit var vm: MainViewModel
+    private lateinit var vm: TodoViewModel
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -54,7 +54,7 @@ class MainActivity : ComponentActivity() {
         val db = getInstance(applicationContext)
         val factory = MainViewModelFactory(db.todoDao())
 
-        vm = ViewModelProvider(this, factory)[MainViewModel::class.java]
+        vm = ViewModelProvider(this, factory)[TodoViewModel::class.java]
 
         enableEdgeToEdge()
 

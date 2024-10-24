@@ -5,6 +5,8 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.compose.compiler)
     id("com.google.devtools.ksp")
+    id("com.google.dagger.hilt.android")
+
 
 }
 
@@ -83,7 +85,8 @@ android {
         ksp(libs.androidx.room.compiler)
         implementation(libs.androidx.room.ktx)
         implementation(libs.kotlinx.coroutines)
-
+        implementation("com.google.dagger:hilt-android:2.44")
+        ksp("com.google.dagger:hilt-android-compiler:2.44")
 
 
     }

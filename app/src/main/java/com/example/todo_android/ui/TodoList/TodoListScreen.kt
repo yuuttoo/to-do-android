@@ -33,7 +33,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.dp
 import com.example.todo_android.R
-import com.example.todo_android.data.room.TodoContent
+import com.example.todo_android.data.model.TodoContent
 
 
 @Composable
