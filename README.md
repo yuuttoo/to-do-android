@@ -1,6 +1,6 @@
 ### Main Features of the App:
 
-<img src="TodoAndroid_git.gif" alt="TodoAppDemo" width="300" height="600"/>
+<img src="todoAndroid_git.gif" alt="TodoAppDemo" width="300" height="600"/>
 
 - **Multi-functional To-Do List**: Users can add, edit, delete, and mark tasks as completed or unfinished.
 - **Filtering Capabilities**: Easily filter tasks based on their completion status (completed or incomplete).
