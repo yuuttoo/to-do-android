@@ -1,4 +1,3 @@
-import io.grpc.internal.SharedResourceHolder.release
 
 plugins {
     alias(libs.plugins.android.application)
@@ -75,6 +74,12 @@ android {
         implementation(libs.androidx.ui.tooling.preview)
         implementation(libs.androidx.material3)
         testImplementation(libs.junit)
+        testImplementation (libs.org.mockito)
+        testImplementation (libs.kotlinx.coroutines.test)
+        testImplementation (libs.core.testing)
+        testImplementation(libs.app.cash.turbine)
+        testImplementation (libs.io.mockk)
+        implementation(libs.kotlin.test)
         androidTestImplementation(libs.androidx.junit)
         androidTestImplementation(libs.androidx.espresso.core)
         androidTestImplementation(platform(libs.androidx.compose.bom))
